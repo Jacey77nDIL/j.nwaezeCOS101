@@ -1,11 +1,8 @@
-use std::collections::HashMap;
-use std::io::{self, Write}; // For reading input from the user
+use std::io;
 
 fn main() {
-    // Define the APS levels inside the main function
-    let mut aps_levels: HashMap<&str, Vec<(&str, (u8, u8), &str)>> = HashMap::new();
-
-    aps_levels.insert("Office Administrator", vec![
+    // Tuples with role, years, and APS level
+    let aps_tuple_office_admin: (&str, Vec<(&str, (i32, i32), &str)>) = ("Office Administrator", vec![
         ("Intern", (0, 2), "APS 1-2"),
         ("Administrator", (3, 5), "APS 3-5"),
         ("Senior Administrator", (5, 8), "APS 5-8"),
@@ -14,7 +11,7 @@ fn main() {
         ("CEO", (13, 50), "SES"),
     ]);
 
-    aps_levels.insert("Academic", vec![
+    let aps_tuple_academic: (&str, Vec<(&str, (i32, i32), &str)>) = ("Academic", vec![
         ("Research Assistant", (3, 5), "APS 3-5"),
         ("PhD Candidate", (5, 8), "APS 5-8"),
         ("Post-Doc Researcher", (8, 10), "EL1 8-10"),
@@ -22,7 +19,7 @@ fn main() {
         ("Dean", (13, 50), "SES"),
     ]);
 
-    aps_levels.insert("Lawyer", vec![
+    let aps_tuple_lawyer: (&str, Vec<(&str, (i32, i32), &str)>) = ("Lawyer", vec![
         ("Paralegal", (0, 2), "APS 1-2"),
         ("Junior Associate", (3, 5), "APS 3-5"),
         ("Associate", (5, 8), "APS 5-8"),
@@ -31,7 +28,7 @@ fn main() {
         ("Partner", (13, 50), "SES"),
     ]);
 
-    aps_levels.insert("Teacher", vec![
+    let aps_tuple_teacher: (&str, Vec<(&str, (i32, i32), &str)>) = ("Teacher", vec![
         ("Placement", (0, 2), "APS 1-2"),
         ("Classroom Teacher", (3, 5), "APS 3-5"),
         ("Snr Teacher", (5, 8), "APS 5-8"),
@@ -40,31 +37,31 @@ fn main() {
         ("Principal", (13, 50), "SES"),
     ]);
 
-    // Get user input for job title
+    // Get user input
     let mut job_title = String::new();
     println!("Enter your job title (e.g., 'Associate Lawyer'): ");
-    //io::stdout().flush().unwrap();  // Ensure the prompt is displayed
     io::stdin().read_line(&mut job_title).unwrap();
-    let job_title = job_title.trim(); // Remove any trailing newline
+    let job_title = job_title.trim(); // Remove trailing newline
 
-    // Search for the job title in the APS levels
-    let mut found = false;
-    for (category, roles) in &aps_levels {
+    let mut experience_years = String::new();
+    println!("Enter your years of experience (1-50): ");
+    io::stdin().read_line(&mut experience_years).unwrap();
+    let experience_years_int: i32 = experience_years.trim().parse().expect("Invalid input");
+
+    // Function to check APS level for a given category
+    fn check_aps_level(job_title: &str, experience_years_int: i32, roles: Vec<(&str, (i32, i32), &str)>) {
         for (role, years, aps_level) in roles {
-            if job_title.to_lowercase() == role.to_lowercase() {
+            if job_title.to_lowercase() == role.to_lowercase() && experience_years_int >= years.0 && experience_years_int <= years.1{
                 println!("Your APS level is {}", aps_level);
-                println!("Experience: {}-{} years", years.0, years.1);
-                found = true;
-                break; // No need to continue once we find the role
+                return;
             }
         }
-        if found {
-            break; // Stop once we've found the role in any category
-        }
+        println!("The job title you entered is not covered in our database or your level of experience doesn't match your role.");
     }
 
-    // If no role was found
-    if !found {
-        println!("Job title '{}' not found in APS levels.", job_title);
-    }
+    // Check APS level for each category
+    check_aps_level(job_title, experience_years_int, aps_tuple_academic.1.clone());
+    check_aps_level(job_title, experience_years_int, aps_tuple_lawyer.1.clone());
+    check_aps_level(job_title, experience_years_int, aps_tuple_office_admin.1.clone());
+    check_aps_level(job_title, experience_years_int, aps_tuple_teacher.1.clone());
 }

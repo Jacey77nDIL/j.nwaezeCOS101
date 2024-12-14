@@ -1,4 +1,5 @@
 use std::io;
+use std::process;
 
 fn main() {
     // Tuples with role, years, and APS level
@@ -53,7 +54,7 @@ fn main() {
         for (role, years, aps_level) in roles {
             if job_title.to_lowercase() == role.to_lowercase() && experience_years_int >= years.0 && experience_years_int <= years.1{
                 println!("Your APS level is {}", aps_level);
-                return;
+                process::exit(0);
             }
         }
         println!("The job title you entered is not covered in our database or your level of experience doesn't match your role.");

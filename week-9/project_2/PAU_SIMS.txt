@@ -1,0 +1,12 @@
+Student Name | Matric Number| Department   | Level
+
+Oluchi Mordi | ACC102PAU1111| Accounting   | 100
+
+Adams Aliyu  | ECO101PAU1111| Economics    | 300
+
+Shania Bolade| CSC102PAU1111| Computer     | 200
+
+Adekunle Gold| EEE101PAU1111| Electrical   | 500
+
+Blanca Edemoh| MEE102PAU1111| Mechanical   | 100
+
